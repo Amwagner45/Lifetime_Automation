@@ -1,12 +1,38 @@
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.by import By
 import time
+import datetime
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 driver = webdriver.Chrome()
+
+weekday_dict = {
+    "Sunday": 0,
+    "Monday": 1,
+    "Tuesday": 2,
+    "Wednesday": 3,
+    "Thursday": 4,
+    "Friday": 5,
+    "Saturday": 6,
+}
+
+today = datetime.date.today()
+next_weekday = today + datetime.timedelta(
+    days=(6 - today.weekday() + weekday_dict["Sunday"]) % 7
+)
+next_weekday_year = next_weekday.year
+if next_weekday.month < 10:
+    next_weekday_month = f"0{next_weekday.month}"
+elif next_weekday.month >= 10:
+    next_weekday_month = next_weekday.month
+if next_weekday.day < 10:
+    next_weekday_day = f"0{next_weekday.day}"
+elif next_weekday.day >= 10:
+    next_weekday_day = next_weekday.day
+
 
 url = r"https://my.lifetime.life/login.html?resource=%2Fclubs%2Ffl%2Fmiami.html"
 driver.get(url)
@@ -44,7 +70,7 @@ time.sleep(2)
 driver.implicitly_wait(10)
 # --------------------------------------------------------------------------------------------------------------
 
-url = "https://my.lifetime.life/clubs/fl/miami/classes.html?selectedDate=2024-09-21&mode=day&location=Miami+at+The+Falls"
+url = f"https://my.lifetime.life/clubs/fl/miami/classes.html?selectedDate={next_weekday_year}-{next_weekday_month}-{next_weekday_day}&mode=day&location=Miami+at+The+Falls"
 driver.get(url)
 
 # wait for page to load
