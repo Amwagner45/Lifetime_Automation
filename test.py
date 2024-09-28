@@ -1,29 +1,13 @@
-import datetime
+import selenium.webdriver as webdriver
+from selenium.webdriver.common.by import By
 
+driver = webdriver.Chrome()
 
-# def get_next_sunday():
-#     today = datetime.date.today()
-#     sunday = today + datetime.timedelta(days=(6 - today.weekday()) % 7)
-#     return sunday
+url = "https://www.google.com/"
+driver.get(url)
+driver.implicitly_wait(10)
 
+test_var = driver.find_element(By.XPATH, "(//*[name()='a' and @class='pHiOh'])[1]")
 
-# next_sunday = get_next_sunday()
-# print(next_sunday)
-
-
-weekday_dict = {
-    "Sunday": 0,
-    "Monday": 1,
-    "Tuesday": 2,
-    "Wednesday": 3,
-    "Thursday": 4,
-    "Friday": 5,
-    "Saturday": 6,
-}
-
-today = datetime.date.today()
-next_weekday = today + datetime.timedelta(
-    days=(6 - today.weekday() + weekday_dict["Tuesday"]) % 7
-)
-
-print(next_weekday.year)
+# Expecting About on PC and Advertising using Selenium because of smaller window
+print(test_var.text)
